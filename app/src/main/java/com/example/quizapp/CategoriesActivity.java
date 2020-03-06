@@ -25,6 +25,7 @@ public class CategoriesActivity extends AppCompatActivity {
     DatabaseReference myRef = database.getReference();
 
     private RecyclerView recyclerView;
+    private List<CategoryModel> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,35 +44,22 @@ public class CategoriesActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        List<CategoryModel> list = new ArrayList<>();
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-        list.add(new CategoryModel("", "Category1"));
-
-        CategoryAdapter adapter = new CategoryAdapter(list);
+        list = new ArrayList<>();
+        final CategoryAdapter adapter = new CategoryAdapter(list);
         recyclerView.setAdapter(adapter);
 
-        myRef.child("Categories").child("category1").child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child("Categories").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Toast.makeText(CategoriesActivity.this, dataSnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+               for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                   list.add(dataSnapshot1.getValue(CategoryModel.class));
+               }
+               adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(CategoriesActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
