@@ -3,16 +3,20 @@ package com.example.quizapp;
 public class QuestionModel {
 
     private String question,optionA,optionB,optionC,optionD,correctANS;
+    private int setNo;
 
-    public QuestionModel(String question, String optionA, String optionB, String optionC, String optionD, String correctANS) {
+    public QuestionModel() {
+    }
+
+    public QuestionModel(String question, String optionA, String optionB, String optionC, String optionD, String correctANS, int setNo) {
         this.question = question;
         this.optionA = optionA;
         this.optionB = optionB;
         this.optionC = optionC;
         this.optionD = optionD;
         this.correctANS = correctANS;
+        this.setNo = setNo;
     }
-
 
     public String getQuestion() {
         return question;
@@ -60,5 +64,13 @@ public class QuestionModel {
 
     public void setCorrectANS(String correctANS) {
         this.correctANS = correctANS;
+    }
+
+    public int getSetNo() {
+        return setNo;
+    }
+
+    public void setSetNo(int setNo) {
+        this.setNo = setNo;
     }
 }

@@ -79,6 +79,7 @@
             android:layout_weight="1"
             android:background="@drawable/rounded_borders"
             android:backgroundTint="#989898"
+            android:textColor="@android:color/black"
             android:text="Button" />
 
         <Button
@@ -89,6 +90,7 @@
             android:layout_weight="1"
             android:background="@drawable/rounded_borders"
             android:backgroundTint="#989898"
+            android:textColor="@android:color/black"
             android:text="Button" />
 
         <Button
@@ -99,6 +101,7 @@
             android:layout_weight="1"
             android:background="@drawable/rounded_borders"
             android:backgroundTint="#989898"
+            android:textColor="@android:color/black"
             android:text="Button" />
 
         <Button
@@ -109,6 +112,7 @@
             android:layout_weight="1"
             android:background="@drawable/rounded_borders"
             android:backgroundTint="#989898"
+            android:textColor="@android:color/black"
             android:text="Button" />
     </LinearLayout>
 
