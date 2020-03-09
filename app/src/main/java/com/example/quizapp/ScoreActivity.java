@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 public class ScoreActivity extends AppCompatActivity {
 
     private TextView scored, total;
@@ -16,6 +19,8 @@ public class ScoreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
+
+        loadAds();
 
         scored = findViewById(R.id.scored);
         total = findViewById(R.id.total);
@@ -31,5 +36,11 @@ public class ScoreActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void loadAds() {
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 }

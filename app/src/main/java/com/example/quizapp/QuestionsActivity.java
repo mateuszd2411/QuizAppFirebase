@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,6 +67,8 @@ public class QuestionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_questions);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        loadAds();
 
         question = findViewById(R.id.question);
         noIndicator = findViewById(R.id.no_indicator);
@@ -152,7 +156,7 @@ public class QuestionsActivity extends AppCompatActivity {
                                     list.get(position).getOptionC() + "\n"+
                                     list.get(position).getOptionD();
                             Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                            shareIntent.setType("plain/text");
+                            shareIntent.setType("text/plain");
                             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Quizzer challenge");
                             shareIntent.putExtra(Intent.EXTRA_TEXT, body);
                             startActivity(Intent.createChooser(shareIntent, "Share via"));
@@ -294,5 +298,10 @@ public class QuestionsActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    private void loadAds() {
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+    }
 
 }

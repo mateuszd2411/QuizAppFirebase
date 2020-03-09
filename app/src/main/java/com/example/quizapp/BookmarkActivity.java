@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -37,6 +39,8 @@ public class BookmarkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmark);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
+        loadAds();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Bookmarks");
@@ -97,5 +101,11 @@ public class BookmarkActivity extends AppCompatActivity {
         String json = gson.toJson(bookmarksList);
         editor.putString(KEY_NAME,json);
         editor.commit();
+    }
+
+    private void loadAds() {
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 }
