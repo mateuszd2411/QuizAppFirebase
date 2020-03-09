@@ -142,6 +142,22 @@ public class QuestionsActivity extends AppCompatActivity {
                             playAnim(question,0, list.get(position).getQuestion());
                         }
                     });
+
+                    shareBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String body = list.get(position).getQuestion() + "\n"+
+                                    list.get(position).getOptionA() + "\n"+
+                                    list.get(position).getOptionB() + "\n"+
+                                    list.get(position).getOptionC() + "\n"+
+                                    list.get(position).getOptionD();
+                            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                            shareIntent.setType("plain/text");
+                            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Quizzer challenge");
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, body);
+                            startActivity(Intent.createChooser(shareIntent, "Share via"));
+                        }
+                    });
                 }else {
                     finish();
                     Toast.makeText(QuestionsActivity.this, "no questions", Toast.LENGTH_SHORT).show();
@@ -256,7 +272,6 @@ public class QuestionsActivity extends AppCompatActivity {
         }
     }
 
-
     private boolean modelMatch(){
         boolean matched = false;
         int i = 0;
@@ -271,7 +286,6 @@ public class QuestionsActivity extends AppCompatActivity {
         }
         return matched;
     }
-
 
     private void storeBookmarks(){
 
