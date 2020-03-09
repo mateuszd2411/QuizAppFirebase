@@ -7,14 +7,21 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+
 public class GridAdapter extends BaseAdapter {
 
     private int sets = 0;
     private String cattegory;
+    private InterstitialAd interstitialAd;
 
-    public GridAdapter(int sets, String cattegory) {
+    public GridAdapter(int sets, String cattegory, InterstitialAd interstitialAd) {
         this.sets = sets;
         this.cattegory = cattegory;
+        this.interstitialAd = interstitialAd;
+
     }
 
     public GridAdapter(int sets) {
@@ -50,6 +57,23 @@ public class GridAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                interstitialAd.setAdListener(new AdListener(){
+
+                    @Override
+                    public void onAdClosed() {
+                        super.onAdClosed();
+                        interstitialAd.loadAd(new AdRequest.Builder().build());
+                        Intent questionIntent = new Intent(parent.getContext(), QuestionsActivity.class);
+                        questionIntent.putExtra("category", cattegory);
+                        questionIntent.putExtra("setNo", position+1);
+                        parent.getContext().startActivity(questionIntent);
+
+                    }
+                });
+                if (interstitialAd.isLoaded()){
+                    interstitialAd.show();
+                    return;
+                }
                 Intent questionIntent = new Intent(parent.getContext(), QuestionsActivity.class);
                 questionIntent.putExtra("category", cattegory);
                 questionIntent.putExtra("setNo", position+1);

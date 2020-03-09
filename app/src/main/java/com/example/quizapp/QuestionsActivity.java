@@ -3,6 +3,7 @@ package com.example.quizapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.PagerAdapter;
 
 import android.animation.Animator;
 import android.app.Dialog;
@@ -19,8 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,6 +63,8 @@ public class QuestionsActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private Gson gson;
     private int matchedQuestionPosition;
+
+    private InterstitialAd interstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +140,11 @@ public class QuestionsActivity extends AppCompatActivity {
                             enableOption(true);
                             position++;
                             if (position == list.size()){
+                                if (interstitialAd.isLoaded()) {
+                                    interstitialAd.show();
+                                    return;
+                                }
+
                                 Intent scoreIntent = new Intent(QuestionsActivity.this, ScoreActivity.class);
                                 scoreIntent.putExtra("score", score);
                                 scoreIntent.putExtra("total", list.size());
@@ -302,6 +312,24 @@ public class QuestionsActivity extends AppCompatActivity {
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getResources().getString(R.string.interstitialAd_id));
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.setAdListener(new AdListener(){
+
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                interstitialAd.loadAd(new AdRequest.Builder().build());
+                Intent scoreIntent = new Intent(QuestionsActivity.this, ScoreActivity.class);
+                scoreIntent.putExtra("score", score);
+                scoreIntent.putExtra("total", list.size());
+                startActivity(scoreIntent);
+                finish();
+                return;
+            }
+        });
     }
 
 }

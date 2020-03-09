@@ -8,12 +8,15 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.GridView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 public class SetsActivity extends AppCompatActivity {
 
     private GridView gridView;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +32,7 @@ public class SetsActivity extends AppCompatActivity {
 
         gridView = findViewById(R.id.gridview);
 
-        GridAdapter adapter = new GridAdapter(getIntent().getIntExtra("sets",0),getIntent().getStringExtra("title"));
+        GridAdapter adapter = new GridAdapter(getIntent().getIntExtra("sets",0),getIntent().getStringExtra("title"), mInterstitialAd);
         gridView.setAdapter(adapter);
     }
 
@@ -45,5 +48,10 @@ public class SetsActivity extends AppCompatActivity {
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitialAd_id));
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
     }
 }
